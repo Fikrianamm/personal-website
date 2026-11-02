@@ -50,7 +50,7 @@ export function Navbar() {
           onClick={() => setIsOpen(false)}
           className="group inline-flex min-h-11 items-center gap-2 rounded-sm text-xl font-semibold tracking-tight text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
         >
-          <span>FA.</span>
+          <span>Fikri Anam.</span>
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">

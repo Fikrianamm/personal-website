@@ -6,7 +6,7 @@ interface SkillBadgeProps {
 
 export function SkillBadge({ skill }: SkillBadgeProps) {
   return (
-    <span className="inline-flex min-h-10 items-center gap-2 rounded-full border border-ink-faint bg-paper px-3.5 py-2 text-sm font-medium text-ink">
+    <span className="skill-card__badge inline-flex min-h-10 items-center gap-2 rounded-full border border-ink-faint bg-paper-soft px-3.5 py-2 text-sm font-medium text-ink motion-reduce:transition-none">
       {skill.icon_url
         ? (
           <img

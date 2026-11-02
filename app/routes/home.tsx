@@ -46,8 +46,8 @@ function toPortfolioProfile(profile: Profile | null): PortfolioProfile | null {
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { supabase } = createClient(request);
-  const [profileRes, projectsRes, skillsRes, experiencesRes] =
-    await Promise.all([
+  const [profileRes, projectsRes, skillsRes, experiencesRes] = await Promise
+    .all([
       supabase
         .from("profile")
         .select("*")
@@ -59,8 +59,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       supabase.from("experiences").select("*").order("display_order"),
     ]);
 
-  const error =
-    profileRes.error ??
+  const error = profileRes.error ??
     projectsRes.error ??
     skillsRes.error ??
     experiencesRes.error;
@@ -110,19 +109,19 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      {profile ? (
-        <Hero profile={profile} experienceCount={experiences.length} />
-      ) : (
-        <section
-          id="home"
-          className="container-wide flex min-h-[70svh] scroll-mt-24 items-center py-20"
-        >
-          <div className="container-narrow">
-            <p className="eyebrow">Portfolio · Web development</p>
-            <h1 className="section-heading mt-6">Profil belum tersedia.</h1>
-          </div>
-        </section>
-      )}
+      {profile
+        ? <Hero profile={profile} experienceCount={experiences.length} />
+        : (
+          <section
+            id="home"
+            className="container-wide flex min-h-[70svh] scroll-mt-24 items-center py-20"
+          >
+            <div className="container-narrow">
+              <p className="eyebrow">Portfolio · Web development</p>
+              <h1 className="section-heading mt-6">Profil belum tersedia.</h1>
+            </div>
+          </section>
+        )}
 
       <section
         id="about"
@@ -135,65 +134,67 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               Membangun web yang terasa sederhana dan bekerja dengan baik.
             </h2>
           </Reveal>
-          {profile ? (
-            <Reveal delay={1}>
-              <p className="section-intro text-lg">
-                Saya mengerjakan produk web dari kebutuhan hingga implementasi,
-                dengan perhatian pada alur yang jelas, kode yang terawat, dan
-                pengalaman yang nyaman digunakan.
-              </p>
-              <dl className="mt-9 grid gap-px overflow-hidden rounded-panel border border-ink-faint bg-ink-faint sm:grid-cols-2">
-                <div className="bg-paper p-5 sm:p-6">
-                  <dt className="text-xs font-medium uppercase tracking-[0.14em] text-ink-soft">
-                    Fokus
-                  </dt>
-                  <dd className="mt-2 text-sm font-medium leading-6">
-                    {profile.headline}
-                  </dd>
-                </div>
-                <div className="bg-paper p-5 sm:p-6">
-                  <dt className="text-xs font-medium uppercase tracking-[0.14em] text-ink-soft">
-                    Berbasis di
-                  </dt>
-                  <dd className="mt-2 text-sm font-medium leading-6">
-                    {profile.location ?? "Terbuka untuk bekerja jarak jauh"}
-                  </dd>
-                </div>
-                <div className="bg-paper p-5 sm:p-6">
-                  <dt className="text-xs font-medium uppercase tracking-[0.14em] text-ink-soft">
-                    Email
-                  </dt>
-                  <dd className="mt-2 break-all text-sm font-medium leading-6">
-                    <a
-                      href={`mailto:${profile.email}`}
-                      className="underline decoration-ink-faint underline-offset-4 transition-colors hover:decoration-ink"
-                    >
-                      {profile.email}
-                    </a>
-                  </dd>
-                </div>
-                <div className="bg-paper p-5 sm:p-6">
-                  <dt className="text-xs font-medium uppercase tracking-[0.14em] text-ink-soft">
-                    Telepon
-                  </dt>
-                  <dd className="mt-2 text-sm font-medium leading-6">
-                    {profile.phone ? (
+          {profile
+            ? (
+              <Reveal delay={1}>
+                <p className="section-intro text-lg">
+                  Saya mengerjakan produk web dari kebutuhan hingga
+                  implementasi, dengan perhatian pada alur yang jelas, kode yang
+                  terawat, dan pengalaman yang nyaman digunakan.
+                </p>
+                <dl className="mt-9 grid gap-px overflow-hidden rounded-panel border border-ink-faint bg-ink-faint sm:grid-cols-2">
+                  <div className="bg-paper p-5 sm:p-6">
+                    <dt className="text-xs font-medium uppercase tracking-[0.14em] text-ink-soft">
+                      Fokus
+                    </dt>
+                    <dd className="mt-2 text-sm font-medium leading-6">
+                      {profile.headline}
+                    </dd>
+                  </div>
+                  <div className="bg-paper p-5 sm:p-6">
+                    <dt className="text-xs font-medium uppercase tracking-[0.14em] text-ink-soft">
+                      Berbasis di
+                    </dt>
+                    <dd className="mt-2 text-sm font-medium leading-6">
+                      {profile.location ?? "Terbuka untuk bekerja jarak jauh"}
+                    </dd>
+                  </div>
+                  <div className="bg-paper p-5 sm:p-6">
+                    <dt className="text-xs font-medium uppercase tracking-[0.14em] text-ink-soft">
+                      Email
+                    </dt>
+                    <dd className="mt-2 break-all text-sm font-medium leading-6">
                       <a
-                        href={`tel:${profile.phone}`}
+                        href={`mailto:${profile.email}`}
                         className="underline decoration-ink-faint underline-offset-4 transition-colors hover:decoration-ink"
                       >
-                        {profile.phone}
+                        {profile.email}
                       </a>
-                    ) : (
-                      "Tersedia melalui email"
-                    )}
-                  </dd>
-                </div>
-              </dl>
-            </Reveal>
-          ) : (
-            <p className="section-intro">Data profil belum tersedia.</p>
-          )}
+                    </dd>
+                  </div>
+                  <div className="bg-paper p-5 sm:p-6">
+                    <dt className="text-xs font-medium uppercase tracking-[0.14em] text-ink-soft">
+                      Telepon
+                    </dt>
+                    <dd className="mt-2 text-sm font-medium leading-6">
+                      {profile.phone
+                        ? (
+                          <a
+                            href={`tel:${profile.phone}`}
+                            className="underline decoration-ink-faint underline-offset-4 transition-colors hover:decoration-ink"
+                          >
+                            {profile.phone}
+                          </a>
+                        )
+                        : (
+                          "Tersedia melalui email"
+                        )}
+                    </dd>
+                  </div>
+                </dl>
+              </Reveal>
+            )
+            : <p className="section-intro">Data profil belum tersedia.</p>}
         </div>
       </section>
 
@@ -214,38 +215,44 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               </p>
             </Reveal>
           </div>
-          {skills.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2">
-              {Object.entries(skillsByCategory).map(
-                ([category, categorySkills], index) => (
-                  <Reveal
-                    key={category}
-                    delay={index % 4}
-                    className="group/skill relative overflow-hidden rounded-panel border border-ink-faint p-5 duration-300 hover:-translate-y-1 hover:border-ink/25 hover:shadow-lg sm:p-7 motion-reduce:transition-none transition-all"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="absolute -right-2 -top-8 select-none text-8xl font-semibold tracking-[-0.1em] text-ink/[0.035] transition-all duration-500 group-hover/skill:-translate-x-2 group-hover/skill:translate-y-2 motion-reduce:transition-none"
+          {skills.length > 0
+            ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {Object.entries(skillsByCategory).map(
+                  ([category, categorySkills], index) => (
+                    <Reveal
+                      key={category}
+                      delay={index % 4}
+                      className="h-full"
                     >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="mb-5 text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">
-                      {category}
-                    </h3>
-                    <ul className="flex flex-wrap gap-2">
-                      {categorySkills.map((skill) => (
-                        <li key={skill.id}>
-                          <SkillBadge skill={skill} />
-                        </li>
-                      ))}
-                    </ul>
-                  </Reveal>
-                ),
-              )}
-            </div>
-          ) : (
-            <p className="section-intro">Belum ada skill yang ditambahkan.</p>
-          )}
+                      <div className="skill-card group/skill relative h-full overflow-hidden rounded-panel border border-ink-faint p-5 hover:border-ink/25 hover:shadow-lg sm:p-7 motion-reduce:transition-none">
+                        <span
+                          aria-hidden="true"
+                          className="skill-card__index absolute -right-2 -top-8 select-none text-8xl font-semibold tracking-[-0.1em] text-ink/[0.035]"
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <h3 className="mb-5 text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">
+                          {category}
+                        </h3>
+                        <ul className="flex flex-wrap gap-2">
+                          {categorySkills.map((skill) => (
+                            <li key={skill.id}>
+                              <SkillBadge skill={skill} />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </Reveal>
+                  ),
+                )}
+              </div>
+            )
+            : (
+              <p className="section-intro">
+                Belum ada skill yang ditambahkan.
+              </p>
+            )}
         </div>
       </section>
 
@@ -266,21 +273,26 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               </p>
             </Reveal>
           </div>
-          {experiences.length > 0 ? (
-            <ol className="mx-auto max-w-5xl divide-y divide-ink-faint border-y border-ink-faint">
-              {experiences.map((experience, index) => (
-                <li key={experience.id}>
-                  <Reveal delay={index % 4}>
-                    <ExperienceCard experience={experience} index={index + 1} />
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p className="section-intro">
-              Belum ada pengalaman yang ditambahkan.
-            </p>
-          )}
+          {experiences.length > 0
+            ? (
+              <ol className="mx-auto max-w-5xl divide-y divide-ink-faint border-y border-ink-faint">
+                {experiences.map((experience, index) => (
+                  <li key={experience.id}>
+                    <Reveal delay={index % 4}>
+                      <ExperienceCard
+                        experience={experience}
+                        index={index + 1}
+                      />
+                    </Reveal>
+                  </li>
+                ))}
+              </ol>
+            )
+            : (
+              <p className="section-intro">
+                Belum ada pengalaman yang ditambahkan.
+              </p>
+            )}
         </div>
       </section>
 
@@ -301,20 +313,25 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               </p>
             </Reveal>
           </div>
-          {projects.length > 0 ? (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project, index) => (
-                <Reveal key={project.id} delay={index % 4} className="h-full">
-                  <ProjectCard
-                    project={project}
-                    onOpen={() => setSelectedProject(project)}
-                  />
-                </Reveal>
-              ))}
-            </div>
-          ) : (
-            <p className="section-intro">Belum ada project yang ditambahkan.</p>
-          )}
+          {projects.length > 0
+            ? (
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                {projects.map((project, index) => (
+                  <Reveal key={project.id} delay={index % 4} className="h-full">
+                    <ProjectCard
+                      project={project}
+                      onOpen={() =>
+                        setSelectedProject(project)}
+                    />
+                  </Reveal>
+                ))}
+              </div>
+            )
+            : (
+              <p className="section-intro">
+                Belum ada project yang ditambahkan.
+              </p>
+            )}
         </div>
       </section>
 
@@ -335,46 +352,52 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 </p>
               </Reveal>
             </div>
-            {profile ? (
-              <div className="flex shrink-0 flex-wrap gap-3">
-                <a
-                  href={`mailto:${profile.email}`}
-                  className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-ink px-6 text-sm font-medium text-paper hover:bg-ink/85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink hover:-translate-y-0.5 transition-all"
-                >
-                  Kirim email <span aria-hidden="true">↗</span>
-                </a>
-              </div>
-            ) : (
-              <p className="section-intro">Informasi kontak belum tersedia.</p>
-            )}
+            {profile
+              ? (
+                <div className="flex shrink-0 flex-wrap gap-3">
+                  <a
+                    href={`mailto:${profile.email}`}
+                    className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-ink px-6 text-sm font-medium text-paper hover:bg-ink/85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink hover:-translate-y-0.5 transition-all"
+                  >
+                    Kirim email <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              )
+              : (
+                <p className="section-intro">
+                  Informasi kontak belum tersedia.
+                </p>
+              )}
           </div>
           {profile && (
             <div className="mt-10 border-t border-ink-faint pt-6">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
                 Temukan saya
               </p>
-              {socialLinks.length > 0 ? (
-                <ul className="mt-4 flex flex-wrap gap-3">
-                  {socialLinks.map(([platform, url]) => (
-                    <li key={platform}>
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-ink-faint bg-paper px-4 text-sm font-medium capitalize text-ink duration-200 hover:-translate-y-0.5 hover:bg-ink hover:text-paper active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none transition-all"
-                      >
-                        {platform}
-                        <span aria-hidden="true">↗</span>
-                        <span className="sr-only"> (buka di tab baru)</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-3 text-sm text-ink-muted">
-                  Hubungi saya melalui email untuk terhubung.
-                </p>
-              )}
+              {socialLinks.length > 0
+                ? (
+                  <ul className="mt-4 flex flex-wrap gap-3">
+                    {socialLinks.map(([platform, url]) => (
+                      <li key={platform}>
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-ink-faint bg-paper px-4 text-sm font-medium capitalize text-ink duration-200 hover:-translate-y-0.5 hover:bg-ink hover:text-paper active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none transition-all"
+                        >
+                          {platform}
+                          <span aria-hidden="true">↗</span>
+                          <span className="sr-only">(buka di tab baru)</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )
+                : (
+                  <p className="mt-3 text-sm text-ink-muted">
+                    Hubungi saya melalui email untuk terhubung.
+                  </p>
+                )}
             </div>
           )}
         </Reveal>

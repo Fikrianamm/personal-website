@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -10,6 +11,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { Navbar } from "~/components/navbar";
+import { TerminalIntro } from "~/components/terminal-intro";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -26,8 +28,11 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const [isIntroVisible, setIsIntroVisible] = useState(true);
+  const completeIntro = useCallback(() => setIsIntroVisible(false), []);
+
   return (
-    <html lang="id">
+    <html lang="id" className={isIntroVisible ? "overflow-hidden" : undefined}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -36,8 +41,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="flex min-h-screen flex-col bg-paper text-ink">
-        <Navbar />
-        <main className="flex-1">{children}</main>
+        <TerminalIntro onComplete={completeIntro} />
+        <div
+          className="portfolio-shell flex min-h-screen flex-col"
+          inert={isIntroVisible}
+        >
+          <Navbar />
+          <main className="flex-1">{children}</main>
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>

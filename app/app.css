@@ -94,6 +94,227 @@ button:focus-visible {
   line-height: 1.8;
 }
 
+.terminal-intro {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 1.5rem;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgb(253 253 253 / 100%), rgb(245 245 245
+    / 100%));
+  animation: terminal-intro-enter 500ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.terminal-intro--exit {
+  pointer-events: none;
+  animation: terminal-intro-exit 350ms ease-in both;
+}
+
+.terminal-window {
+  width: min(100%, 38rem);
+  overflow: hidden;
+  border: 1px solid rgb(253 253 253 / 14%);
+  border-radius: 1rem;
+  background: #111827;
+  box-shadow: 0 2rem 6rem rgb(17 24 39 / 20%);
+  color: #fdfdfd;
+  animation: terminal-window-enter 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.terminal-window__bar {
+  display: grid;
+  min-height: 3.25rem;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid rgb(253 253 253 / 12%);
+  padding-inline: 1.125rem;
+  background: rgb(253 253 253 / 4%);
+}
+
+.terminal-window__lights {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.terminal-window__lights span {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid rgb(253 253 253 / 45%);
+  border-radius: 50%;
+}
+
+.terminal-window__bar p {
+  overflow: hidden;
+  color: rgb(253 253 253 / 70%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.terminal-window__badge {
+  justify-self: end;
+  border: 1px solid rgb(253 253 253 / 18%);
+  border-radius: 999px;
+  padding: 0.25rem 0.5rem;
+  color: rgb(253 253 253 / 55%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+}
+
+.terminal-window__body {
+  padding: clamp(1.25rem, 5vw, 2rem);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.terminal-window__label {
+  color: rgb(253 253 253 / 50%);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+}
+
+.terminal-window__command {
+  display: flex;
+  min-height: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1.5rem;
+  font-size: clamp(0.75rem, 3.3vw, 0.9rem);
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.terminal-window__prompt {
+  color: rgb(253 253 253 / 58%);
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 0.5rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  background: #fdfdfd;
+  animation: terminal-cursor-blink 1s steps(2, start) infinite;
+}
+
+.terminal-window__output {
+  display: grid;
+  min-height: 5.5rem;
+  align-content: start;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  color: rgb(253 253 253 / 65%);
+  font-size: 0.72rem;
+}
+
+.terminal-window__output p {
+  animation: terminal-output-in 300ms ease-out both;
+}
+
+.terminal-window__output p span {
+  margin-right: 0.6rem;
+  color: #fdfdfd;
+}
+
+.terminal-window__progress {
+  height: 2px;
+  overflow: hidden;
+  background: rgb(253 253 253 / 14%);
+}
+
+.terminal-window__progress span {
+  display: block;
+  height: 100%;
+  background: #fdfdfd;
+  transition: width 80ms linear;
+}
+
+.terminal-window__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  color: rgb(253 253 253 / 48%);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+}
+
+.terminal-intro__skip {
+  position: absolute;
+  right: max(1.5rem, calc((100vw - 76rem) / 2));
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-ink-faint);
+  border-radius: 999px;
+  padding-inline: 1rem;
+  color: var(--color-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition:
+    color 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.terminal-intro__skip:hover {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.terminal-intro__skip:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+.skill-card {
+  transition:
+    transform 450ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 450ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 300ms ease,
+    background-color 300ms ease;
+}
+
+.skill-card:hover {
+  transform: translateY(-0.3rem);
+}
+
+.skill-card__index {
+  transition:
+    transform 550ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 300ms ease;
+}
+
+.skill-card:hover .skill-card__index {
+  transform: translate(-0.35rem, 0.35rem) rotate(-5deg);
+  color: rgb(17 24 39 / 8%);
+}
+
+.skill-card__badge {
+  transition:
+    transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 200ms ease,
+    background-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.skill-card__badge:hover {
+  transform: translateY(-0.15rem);
+  border-color: rgb(17 24 39 / 28%);
+  background-color: #fdfdfd;
+  box-shadow: 0 0.5rem 1rem rgb(17 24 39 / 7%);
+}
+
 .reveal {
   transition:
     opacity 500ms ease,
@@ -168,6 +389,53 @@ button:focus-visible {
   }
 }
 
+@keyframes terminal-intro-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes terminal-intro-exit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes terminal-window-enter {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes terminal-cursor-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes terminal-output-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (min-width: 768px) {
   .section {
     padding-block: 7rem;
@@ -199,5 +467,23 @@ button:focus-visible {
   .reveal[data-reveal-ready]:not([data-revealed]) {
     opacity: 1;
     transform: none;
+  }
+
+  .terminal-intro,
+  .terminal-intro--exit,
+  .terminal-window,
+  .terminal-cursor,
+  .terminal-window__output p {
+    animation: none;
+  }
+
+  .terminal-window__progress span {
+    transition: none;
+  }
+
+  .skill-card,
+  .skill-card__index,
+  .skill-card__badge {
+    transition: none;
   }
 }
