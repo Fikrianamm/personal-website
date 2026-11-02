@@ -2,9 +2,10 @@ import type { Project } from "~/types/database";
 
 interface ProjectCardProps {
   project: Project;
+  onOpen: () => void;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, onOpen }: ProjectCardProps) {
   const {
     title,
     description,
@@ -15,14 +16,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
   } = project;
 
   return (
-    <article className="group flex min-w-0 flex-col overflow-hidden rounded-panel border border-ink-faint bg-paper transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-xl motion-reduce:transition-none">
+    <article className="group flex min-w-0 flex-col overflow-hidden rounded-panel border border-ink-faint bg-paper duration-300 hover:-translate-y-1 hover:shadow-xl motion-reduce:transition-none transition-all">
       <div className="relative aspect-[16/10] overflow-hidden border-b border-ink-faint bg-paper-soft">
         {thumbnail_url
           ? (
             <img
               src={thumbnail_url}
               alt={`Tampilan ${title}`}
-              className="h-full w-full object-cover grayscale transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none"
+              className="h-full w-full object-cover grayscale duration-700 group-hover:scale-[1.04] group-hover:grayscale-0 motion-reduce:transition-none transition-all"
             />
           )
           : (
@@ -66,8 +67,18 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </ul>
         )}
 
+        <button
+          type="button"
+          onClick={onOpen}
+          className="mt-6 inline-flex min-h-11 w-full items-center justify-between rounded-full border border-ink-faint px-4 text-sm font-medium text-ink transition-[background-color,color,transform] duration-200 hover:bg-ink hover:text-paper active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none"
+          aria-label={`Lihat detail ${title}`}
+        >
+          Lihat detail proyek
+          <span aria-hidden="true" className="text-lg">↗</span>
+        </button>
+
         {(live_url || source_url) && (
-          <div className="mt-auto flex flex-wrap gap-x-5 gap-y-3 border-t border-ink-faint pt-5">
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3 border-t border-ink-faint pt-3">
             {live_url && (
               <a
                 href={live_url}

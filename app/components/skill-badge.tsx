@@ -12,7 +12,7 @@ export function SkillBadge({ skill }: SkillBadgeProps) {
           <img
             src={skill.icon_url}
             alt=""
-            className="h-4 w-4 object-contain grayscale"
+            className="h-4 w-4 object-contain"
             aria-hidden="true"
           />
         )

@@ -94,6 +94,80 @@ button:focus-visible {
   line-height: 1.8;
 }
 
+.reveal {
+  transition:
+    opacity 500ms ease,
+    transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal[data-reveal-ready]:not([data-revealed]) {
+  opacity: 0;
+  transform: translateY(1.25rem);
+}
+
+.reveal[data-revealed] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal[data-reveal-delay="1"] {
+  transition-delay: 80ms;
+}
+
+.reveal[data-reveal-delay="2"] {
+  transition-delay: 160ms;
+}
+
+.reveal[data-reveal-delay="3"] {
+  transition-delay: 240ms;
+}
+
+.project-dialog[open] {
+  animation: project-dialog-in 250ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.project-dialog::backdrop {
+  animation: project-dialog-backdrop-in 200ms ease-out both;
+}
+
+.project-carousel-image {
+  animation: project-image-in 300ms ease-out both;
+}
+
+@keyframes project-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes project-dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes project-image-in {
+  from {
+    opacity: 0.5;
+    transform: scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (min-width: 768px) {
   .section {
     padding-block: 7rem;
@@ -120,5 +194,10 @@ button:focus-visible {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .reveal[data-reveal-ready]:not([data-revealed]) {
+    opacity: 1;
+    transform: none;
   }
 }

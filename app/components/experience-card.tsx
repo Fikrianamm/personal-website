@@ -55,7 +55,7 @@ export function ExperienceCard({ experience, index }: ExperienceCardProps) {
             <img
               src={company_logo_url}
               alt=""
-              className="h-12 w-12 shrink-0 rounded-card border border-ink-faint object-contain grayscale"
+              className="h-12 w-12 shrink-0 rounded-card object-contain"
               aria-hidden="true"
             />
           )
