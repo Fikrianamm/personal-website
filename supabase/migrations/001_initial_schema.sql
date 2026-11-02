@@ -1,53 +1,53 @@
--- Profile table (single row for personal info)
-create table public.profile (
-  id uuid primary key default gen_random_uuid(),
-  full_name text not null,
-  headline text not null default '',
-  bio text not null default '',
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.profile (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  full_name text NOT NULL,
+  headline text NOT NULL DEFAULT ''::text,
+  bio text NOT NULL DEFAULT ''::text,
   avatar_url text,
   resume_url text,
-  email text not null,
+  email text NOT NULL,
   location text,
-  social_links jsonb not null default '{}',
-  updated_at timestamptz not null default now()
+  social_links jsonb NOT NULL DEFAULT '{}'::jsonb,
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  phone text,
+  CONSTRAINT profile_pkey PRIMARY KEY (id)
 );
-
--- Skills table
-create table public.skills (
-  id uuid primary key default gen_random_uuid(),
-  name text not null,
-  category text not null,
+CREATE TABLE public.skills (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  category text NOT NULL,
   icon_url text,
-  display_order int not null default 0
+  CONSTRAINT skills_pkey PRIMARY KEY (id)
 );
-
--- Projects table
-create table public.projects (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  slug text not null unique,
-  description text not null,
-  long_description text,
+CREATE TABLE public.projects (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  title text NOT NULL,
+  slug text NOT NULL UNIQUE,
+  description text NOT NULL,
   thumbnail_url text,
-  images text[] not null default '{}',
-  tech_stack text[] not null default '{}',
+  images ARRAY NOT NULL DEFAULT '{}'::text[],
+  tech_stack ARRAY NOT NULL DEFAULT '{}'::text[],
   live_url text,
   source_url text,
-  is_featured boolean not null default false,
-  display_order int not null default 0,
-  created_at timestamptz not null default now()
+  is_featured boolean NOT NULL DEFAULT false,
+  display_order integer NOT NULL DEFAULT 0,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT projects_pkey PRIMARY KEY (id)
 );
-
--- Experiences table
-create table public.experiences (
-  id uuid primary key default gen_random_uuid(),
-  company text not null,
-  role text not null,
+CREATE TABLE public.experiences (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  company text NOT NULL,
+  role text NOT NULL,
   description text,
-  start_date date not null,
+  start_date date NOT NULL,
   end_date date,
   company_logo_url text,
-  display_order int not null default 0
+  display_order integer NOT NULL DEFAULT 0,
+  skills text,
+  CONSTRAINT experiences_pkey PRIMARY KEY (id)
 );
 
 -- Enable Row Level Security

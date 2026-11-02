@@ -9,7 +9,6 @@ export type Json =
 export type SocialLinks = {
   github?: string;
   linkedin?: string;
-  twitter?: string;
   instagram?: string;
   website?: string;
   [key: string]: string | undefined;
@@ -28,8 +27,9 @@ export type Database = {
           resume_url: string | null;
           email: string;
           location: string | null;
-          social_links: SocialLinks;
+          social_links: Json;
           updated_at: string;
+          phone: string | null;
         };
         Insert: {
           id?: string;
@@ -40,8 +40,9 @@ export type Database = {
           resume_url?: string | null;
           email: string;
           location?: string | null;
-          social_links?: SocialLinks;
+          social_links?: Json;
           updated_at?: string;
+          phone?: string | null;
         };
         Update: {
           id?: string;
@@ -52,8 +53,9 @@ export type Database = {
           resume_url?: string | null;
           email?: string;
           location?: string | null;
-          social_links?: SocialLinks;
+          social_links?: Json;
           updated_at?: string;
+          phone?: string | null;
         };
         Relationships: [];
       };
@@ -63,21 +65,18 @@ export type Database = {
           name: string;
           category: string;
           icon_url: string | null;
-          display_order: number;
         };
         Insert: {
           id?: string;
           name: string;
           category: string;
           icon_url?: string | null;
-          display_order?: number;
         };
         Update: {
           id?: string;
           name?: string;
           category?: string;
           icon_url?: string | null;
-          display_order?: number;
         };
         Relationships: [];
       };
@@ -87,7 +86,6 @@ export type Database = {
           title: string;
           slug: string;
           description: string;
-          long_description: string | null;
           thumbnail_url: string | null;
           images: string[];
           tech_stack: string[];
@@ -102,7 +100,6 @@ export type Database = {
           title: string;
           slug: string;
           description: string;
-          long_description?: string | null;
           thumbnail_url?: string | null;
           images?: string[];
           tech_stack?: string[];
@@ -117,7 +114,6 @@ export type Database = {
           title?: string;
           slug?: string;
           description?: string;
-          long_description?: string | null;
           thumbnail_url?: string | null;
           images?: string[];
           tech_stack?: string[];
@@ -139,6 +135,7 @@ export type Database = {
           end_date: string | null;
           company_logo_url: string | null;
           display_order: number;
+          skills: string | null;
         };
         Insert: {
           id?: string;
@@ -149,6 +146,7 @@ export type Database = {
           end_date?: string | null;
           company_logo_url?: string | null;
           display_order?: number;
+          skills?: string | null;
         };
         Update: {
           id?: string;
@@ -159,36 +157,7 @@ export type Database = {
           end_date?: string | null;
           company_logo_url?: string | null;
           display_order?: number;
-        };
-        Relationships: [];
-      };
-      contact_messages: {
-        Row: {
-          id: string;
-          name: string;
-          email: string;
-          subject: string;
-          message: string;
-          is_read: boolean;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          name: string;
-          email: string;
-          subject: string;
-          message: string;
-          is_read?: boolean;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          name?: string;
-          email?: string;
-          subject?: string;
-          message?: string;
-          is_read?: boolean;
-          created_at?: string;
+          skills?: string | null;
         };
         Relationships: [];
       };
@@ -209,7 +178,9 @@ export type Database = {
 };
 
 export type Profile = Database["public"]["Tables"]["profile"]["Row"];
+export type PortfolioProfile = Omit<Profile, "social_links"> & {
+  social_links: SocialLinks;
+};
 export type Skill = Database["public"]["Tables"]["skills"]["Row"];
 export type Project = Database["public"]["Tables"]["projects"]["Row"];
 export type Experience = Database["public"]["Tables"]["experiences"]["Row"];
-export type ContactMessage = Database["public"]["Tables"]["contact_messages"]["Row"];

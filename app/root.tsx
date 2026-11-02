@@ -10,7 +10,6 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { Navbar } from "~/components/navbar";
-import { Footer } from "~/components/footer";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -21,7 +20,8 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href:
+      "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap",
   },
 ];
 
@@ -31,15 +31,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="color-scheme" content="light" />
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col min-h-screen">
+      <body className="flex min-h-screen flex-col bg-paper text-ink">
         <Navbar />
-        <main className="flex-1 pt-16">
-          {children}
-        </main>
-        <Footer />
+        <main className="flex-1">{children}</main>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -58,25 +56,27 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "Halaman yang kamu cari tidak ditemukan."
-        : error.statusText || details;
+    details = error.status === 404
+      ? "Halaman yang kamu cari tidak ditemukan."
+      : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;
   }
 
   return (
-    <main className="flex items-center justify-center min-h-[60vh] p-4">
+    <main className="flex min-h-[60vh] items-center justify-center bg-paper p-4 text-ink">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-primary-600 mb-4">{message}</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">{details}</p>
-        <a href="/" className="text-primary-600 hover:text-primary-700 font-medium">
+        <h1 className="mb-4 text-6xl font-bold">{message}</h1>
+        <p className="mb-8 text-xl text-ink-muted">{details}</p>
+        <a
+          href="/"
+          className="font-medium underline underline-offset-4 hover:opacity-70"
+        >
           ← Kembali ke Beranda
         </a>
         {stack && (
-          <pre className="mt-8 w-full p-4 overflow-x-auto text-left text-sm bg-gray-100 dark:bg-gray-800 rounded-lg">
+          <pre className="mt-8 w-full overflow-x-auto rounded-card bg-paper-soft p-4 text-left text-sm">
             <code>{stack}</code>
           </pre>
         )}

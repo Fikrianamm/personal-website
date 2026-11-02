@@ -2,66 +2,93 @@ import type { Experience } from "~/types/database";
 
 interface ExperienceCardProps {
   experience: Experience;
+  index: number;
 }
 
 const months = [
-  "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
-  "Jul", "Agu", "Sep", "Okt", "Nov", "Des",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "Mei",
+  "Jun",
+  "Jul",
+  "Agu",
+  "Sep",
+  "Okt",
+  "Nov",
+  "Des",
 ];
 
-function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
+function formatDate(dateString: string): string {
+  const date = new Date(`${dateString.slice(0, 10)}T00:00:00`);
   return `${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-export function ExperienceCard({ experience }: ExperienceCardProps) {
-  const { company, role, description, start_date, end_date, company_logo_url } =
-    experience;
+export function ExperienceCard({ experience, index }: ExperienceCardProps) {
+  const {
+    company,
+    role,
+    description,
+    start_date,
+    end_date,
+    company_logo_url,
+    skills,
+  } = experience;
 
-  const dateRange = `${formatDate(start_date)} - ${end_date ? formatDate(end_date) : "Sekarang"}`;
+  const dateRange = `${formatDate(start_date)} — ${
+    end_date ? formatDate(end_date) : "Sekarang"
+  }`;
 
   return (
-    <div className="relative pl-8 pb-10 last:pb-0">
-      {/* Timeline line */}
-      <div className="absolute top-0 left-[7px] h-full w-px bg-gray-200 last:hidden dark:bg-gray-700" />
+    <article className="grid gap-5 py-7 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-6 md:grid-cols-[4rem_minmax(0,1fr)_auto] md:gap-8 md:py-9">
+      <p
+        aria-hidden="true"
+        className="text-sm font-medium tabular-nums text-ink-soft"
+      >
+        {String(index).padStart(2, "0")}
+      </p>
 
-      {/* Timeline dot */}
-      <div className="absolute top-1 left-0 h-[15px] w-[15px] rounded-full border-[3px] border-primary-500 bg-white dark:bg-gray-950" />
-
-      <div className="flex gap-4">
-        {/* Company logo */}
-        <div className="hidden shrink-0 sm:block">
-          {company_logo_url ? (
+      <div className="flex min-w-0 items-start gap-4">
+        {company_logo_url
+          ? (
             <img
               src={company_logo_url}
-              alt={company}
-              className="h-12 w-12 rounded-lg border border-gray-200 object-contain dark:border-gray-700"
+              alt=""
+              className="h-12 w-12 shrink-0 rounded-card border border-ink-faint object-contain grayscale"
+              aria-hidden="true"
             />
-          ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-50 text-lg font-bold text-primary-600 dark:bg-primary-950 dark:text-primary-400">
+          )
+          : (
+            <div
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-card bg-ink text-base font-semibold text-paper"
+              aria-hidden="true"
+            >
               {company.charAt(0).toUpperCase()}
             </div>
           )}
-        </div>
 
-        {/* Content */}
-        <div className="min-w-0 flex-1">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="min-w-0">
+          <h3 className="text-lg font-semibold leading-snug tracking-tight text-ink sm:text-xl">
             {role}
           </h3>
-          <p className="mt-0.5 text-sm font-medium text-primary-600 dark:text-primary-400">
-            {company}
-          </p>
-          <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
-            {dateRange}
-          </p>
+          <p className="mt-1 text-sm font-medium text-ink-muted">{company}</p>
           {description && (
-            <p className="mt-3 leading-relaxed text-gray-600 dark:text-gray-300">
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-ink-muted">
               {description}
+            </p>
+          )}
+          {skills && (
+            <p className="mt-4 text-xs font-medium leading-6 text-ink-soft">
+              {skills}
             </p>
           )}
         </div>
       </div>
-    </div>
+
+      <p className="pl-16 text-xs font-medium text-ink-soft sm:col-start-2 sm:pl-16 md:col-start-auto md:pl-0 md:pt-1 md:text-right">
+        {dateRange}
+      </p>
+    </article>
   );
 }

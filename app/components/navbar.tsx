@@ -1,115 +1,126 @@
-import { useState } from "react";
-import { NavLink } from "react-router";
+import { useEffect, useState } from "react";
 
 const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/projects", label: "Projects" },
-  { to: "/contact", label: "Contact" },
+  { to: "#home", label: "Beranda" },
+  { to: "#about", label: "Tentang" },
+  { to: "#skills", label: "Keahlian" },
+  { to: "#experience", label: "Pengalaman" },
+  { to: "#projects", label: "Proyek" },
+  { to: "#contact", label: "Kontak" },
 ];
 
 export function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <header className="fixed top-0 right-0 left-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/80">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        {/* Logo / Name */}
-        <NavLink
-          to="/"
-          className="text-xl font-bold tracking-tight text-gray-900 dark:text-white"
-        >
-          Fikri<span className="text-primary-600">.</span>
-        </NavLink>
+  useEffect(() => {
+    const updateScrollState = () => {
+      setIsScrolled((current) => {
+        const next = window.scrollY > 24;
+        return current === next ? current : next;
+      });
+    };
 
-        {/* Desktop links */}
-        <ul className="hidden items-center gap-1 md:flex">
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrollState);
+  }, []);
+
+  return (
+    <header
+      className={`sticky top-0 z-50 border-b transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ease-out motion-reduce:transition-none ${
+        isScrolled
+          ? "border-ink-faint bg-paper/60 shadow-sm backdrop-blur-xl"
+          : "border-transparent bg-paper"
+      }`}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          setIsOpen(false);
+        }
+      }}
+    >
+      <nav
+        aria-label="Navigasi utama"
+        className={`container-wide flex items-center justify-between transition-[padding] duration-300 ease-out motion-reduce:transition-none ${
+          isScrolled ? "py-3" : "py-5"
+        }`}
+      >
+        <a
+          href="#home"
+          onClick={() => setIsOpen(false)}
+          className="group inline-flex min-h-11 items-center gap-2 rounded-sm text-xl font-semibold tracking-tight text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+        >
+          <span>FA.</span>
+        </a>
+
+        <ul className="hidden items-center gap-1 lg:flex">
           {navLinks.map((link) => (
             <li key={link.to}>
-              <NavLink
-                to={link.to}
-                end={link.to === "/"}
-                className={({ isActive }) =>
-                  `rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                  }`
-                }
+              <a
+                href={link.to}
+                className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-ink-muted transition-colors duration-200 hover:bg-paper-soft hover:text-ink active:bg-ink/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
               >
                 {link.label}
-              </NavLink>
+              </a>
             </li>
           ))}
         </ul>
 
-        {/* Mobile hamburger button */}
         <button
           type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className="inline-flex items-center justify-center rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 md:hidden dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-          aria-label="Toggle menu"
+          onClick={() => setIsOpen((open) => !open)}
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink-faint text-ink transition-colors hover:bg-paper-soft active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink lg:hidden"
+          aria-label={isOpen ? "Tutup menu" : "Buka menu"}
           aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
         >
-          {isOpen ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          )}
+          <svg
+            aria-hidden="true"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.8}
+          >
+            {isOpen
+              ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 6l12 12M18 6L6 18"
+                />
+              )
+              : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 7h16M4 12h16M4 17h16"
+                />
+              )}
+          </svg>
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="border-t border-gray-200 bg-white/95 backdrop-blur-md md:hidden dark:border-gray-800 dark:bg-gray-950/95">
-          <ul className="space-y-1 px-4 py-3">
-            {navLinks.map((link) => (
-              <li key={link.to}>
-                <NavLink
-                  to={link.to}
-                  end={link.to === "/"}
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `block rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-                      isActive
-                        ? "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                    }`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div
+        id="mobile-navigation"
+        className={`border-t border-ink-faint px-4 pb-4 pt-3 lg:hidden ${
+          isOpen ? "block" : "hidden"
+        }`}
+      >
+        <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-1 sm:grid-cols-3">
+          {navLinks.map((link) => (
+            <li key={link.to}>
+              <a
+                href={link.to}
+                onClick={() => setIsOpen(false)}
+                className="flex min-h-11 items-center rounded-card px-3 text-sm font-medium text-ink-muted transition-colors hover:bg-paper-soft hover:text-ink active:bg-ink/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </header>
   );
 }

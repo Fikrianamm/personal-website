@@ -1,9 +1,34 @@
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "~/types/database";
+import {
+  createServerClient,
+  parseCookieHeader,
+  serializeCookieHeader,
+} from "@supabase/ssr";
 
-const supabaseUrl =
-  process.env.SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseAnonKey =
-  process.env.SUPABASE_ANON_KEY || "placeholder-anon-key";
+export function createClient(request: Request) {
+  const headers = new Headers();
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+  const supabase = createServerClient(
+    process.env.VITE_SUPABASE_URL!,
+    process.env.VITE_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return parseCookieHeader(request.headers.get("Cookie") ?? "") as {
+            name: string;
+            value: string;
+          }[];
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            headers.append(
+              "Set-Cookie",
+              serializeCookieHeader(name, value, options)
+            )
+          );
+        },
+      },
+    }
+  );
+
+  return { supabase, headers };
+}
